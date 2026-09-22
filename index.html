@@ -1,0 +1,4510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Attendance System</title>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --blue:#2563eb;
+    --purple:#7c3aed;
+    --pink:#ec4899;
+    --cyan:#06b6d4;
+    --green:#10b981;
+    --orange:#f59e0b;
+    --red:#ef4444;
+
+    --text:#172033;
+    --muted:#64748b;
+    --white:#ffffff;
+    --border:#e2e8f0;
+}
+
+body{
+
+    font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    color:var(--text);
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(
+        circle at 10% 20%,
+        rgba(37,99,235,.35),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 90% 10%,
+        rgba(236,72,153,.35),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 20% 90%,
+        rgba(16,185,129,.3),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 90% 85%,
+        rgba(124,58,237,.35),
+        transparent 25%
+    ),
+
+    linear-gradient(
+        135deg,
+        #dbeafe,
+        #fce7f3,
+        #cffafe,
+        #ede9fe
+    );
+
+    background-attachment:fixed;
+
+}
+
+
+/* DARK MODE */
+
+body.dark{
+
+    color:#f8fafc;
+
+    background:
+
+    radial-gradient(
+        circle at 10% 20%,
+        rgba(37,99,235,.5),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 90% 10%,
+        rgba(236,72,153,.45),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 20% 90%,
+        rgba(16,185,129,.4),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 90% 85%,
+        rgba(124,58,237,.5),
+        transparent 25%
+    ),
+
+    linear-gradient(
+        135deg,
+        #0f172a,
+        #172554,
+        #312e81,
+        #3b0764
+    );
+
+}
+
+
+/* =========================================================
+   COMMON
+========================================================= */
+
+.hidden{
+    display:none !important;
+}
+
+button{
+    cursor:pointer;
+    border:none;
+    font-family:inherit;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 18px rgba(0,0,0,.15);
+}
+
+input,
+select{
+
+    width:100%;
+
+    padding:13px;
+
+    border-radius:10px;
+
+    border:2px solid rgba(148,163,184,.3);
+
+    background:rgba(255,255,255,.85);
+
+    color:#172033;
+
+    outline:none;
+
+    margin-top:6px;
+
+}
+
+input:focus,
+select:focus{
+
+    border-color:var(--blue);
+
+    box-shadow:
+    0 0 0 3px
+    rgba(37,99,235,.12);
+
+}
+
+.dark input,
+.dark select{
+
+    background:#1e293b;
+
+    color:white;
+
+    border-color:#475569;
+
+}
+
+
+/* =========================================================
+   LANDING PAGE
+========================================================= */
+
+.landing{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:30px;
+
+}
+
+
+.landing-container{
+
+    width:100%;
+
+    max-width:1100px;
+
+    background:
+    rgba(255,255,255,.85);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 30px 80px
+    rgba(30,41,59,.25);
+
+    border:
+    1px solid
+    rgba(255,255,255,.8);
+
+}
+
+
+.dark .landing-container{
+
+    background:
+    rgba(15,23,42,.82);
+
+    border-color:
+    rgba(255,255,255,.1);
+
+}
+
+
+.landing-top{
+
+    padding:60px 30px;
+
+    text-align:center;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        rgba(37,99,235,.18),
+        rgba(124,58,237,.18),
+        rgba(236,72,153,.18)
+    );
+
+}
+
+
+.logo{
+
+    width:90px;
+
+    height:90px;
+
+    margin:
+    0 auto 20px;
+
+    border-radius:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:45px;
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed,
+        #ec4899
+    );
+
+    box-shadow:
+    0 15px 35px
+    rgba(124,58,237,.35);
+
+}
+
+
+.landing h1{
+
+    font-size:45px;
+
+    margin-bottom:15px;
+
+}
+
+
+.landing-subtitle{
+
+    color:var(--muted);
+
+    font-size:18px;
+
+    margin-bottom:30px;
+
+}
+
+
+.start-btn{
+
+    padding:
+    15px 40px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed,
+        #ec4899
+    );
+
+    box-shadow:
+    0 10px 25px
+    rgba(124,58,237,.3);
+
+}
+
+
+.features{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+
+    padding:30px;
+
+}
+
+
+.feature{
+
+    padding:25px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    color:#172033;
+
+    background:white;
+
+    border:1px solid #e2e8f0;
+
+    transition:.3s;
+
+}
+
+
+.feature:nth-child(1){
+
+    background:
+    linear-gradient(
+        135deg,
+        #dbeafe,
+        #bfdbfe
+    );
+
+}
+
+
+.feature:nth-child(2){
+
+    background:
+    linear-gradient(
+        135deg,
+        #cffafe,
+        #a5f3fc
+    );
+
+}
+
+
+.feature:nth-child(3){
+
+    background:
+    linear-gradient(
+        135deg,
+        #dcfce7,
+        #bbf7d0
+    );
+
+}
+
+
+.feature:nth-child(4){
+
+    background:
+    linear-gradient(
+        135deg,
+        #fce7f3,
+        #fbcfe8
+    );
+
+}
+
+
+.feature:hover{
+
+    transform:
+    translateY(-7px);
+
+}
+
+
+.feature-icon{
+
+    font-size:35px;
+
+    margin-bottom:12px;
+
+}
+
+
+.feature h3{
+
+    margin-bottom:8px;
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.auth-wrapper{
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+
+.auth-card{
+
+    width:100%;
+
+    max-width:450px;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    background:
+    rgba(255,255,255,.9);
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:
+    0 25px 70px
+    rgba(30,41,59,.25);
+
+}
+
+
+.dark .auth-card{
+
+    background:
+    rgba(15,23,42,.9);
+
+}
+
+
+.auth-logo{
+
+    font-size:50px;
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+}
+
+
+.auth-card h1{
+
+    text-align:center;
+
+    margin-bottom:8px;
+
+}
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:25px;
+
+}
+
+
+.input-group{
+
+    margin-bottom:15px;
+
+}
+
+
+.input-group label{
+
+    font-weight:bold;
+
+    font-size:14px;
+
+}
+
+
+.primary-btn,
+.purple-btn,
+.green-btn,
+.red-btn{
+
+    width:100%;
+
+    padding:13px;
+
+    margin-top:8px;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+
+.primary-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
+}
+
+
+.purple-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #c026d3
+    );
+
+}
+
+
+.green-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #059669,
+        #10b981
+    );
+
+}
+
+
+.red-btn{
+
+    background:
+    linear-gradient(
+        135deg,
+        #dc2626,
+        #f43f5e
+    );
+
+}
+
+
+.text-btn{
+
+    display:block;
+
+    margin:15px auto 0;
+
+    background:none;
+
+    color:var(--blue);
+
+    text-decoration:underline;
+
+}
+
+
+.message{
+
+    text-align:center;
+
+    margin-top:15px;
+
+    font-weight:bold;
+
+}
+
+
+.success{
+
+    color:var(--green);
+
+}
+
+
+.error{
+
+    color:var(--red);
+
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    min-height:100vh;
+
+}
+
+
+.topbar{
+
+    height:70px;
+
+    padding:
+    0 25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:
+    rgba(255,255,255,.88);
+
+    backdrop-filter:blur(15px);
+
+    border-bottom:
+    1px solid
+    rgba(148,163,184,.25);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:50;
+
+}
+
+
+.dark .topbar{
+
+    background:
+    rgba(15,23,42,.9);
+
+}
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-weight:bold;
+
+    font-size:20px;
+
+}
+
+
+.brand-icon{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed,
+        #ec4899
+    );
+
+}
+
+
+.top-actions{
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+
+.icon-btn{
+
+    padding:10px 13px;
+
+    border-radius:9px;
+
+    background:#e2e8f0;
+
+}
+
+
+.dark .icon-btn{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.main-layout{
+
+    display:flex;
+
+    min-height:
+    calc(100vh - 70px);
+
+}
+
+
+.sidebar{
+
+    width:230px;
+
+    padding:20px 12px;
+
+    background:
+    rgba(255,255,255,.75);
+
+    backdrop-filter:blur(15px);
+
+    border-right:
+    1px solid
+    rgba(148,163,184,.25);
+
+}
+
+
+.dark .sidebar{
+
+    background:
+    rgba(15,23,42,.8);
+
+}
+
+
+.sidebar button{
+
+    width:100%;
+
+    text-align:left;
+
+    padding:13px;
+
+    margin-bottom:6px;
+
+    border-radius:10px;
+
+    background:transparent;
+
+    color:inherit;
+
+    font-weight:500;
+
+}
+
+
+.sidebar button:hover{
+
+    background:
+    rgba(37,99,235,.1);
+
+}
+
+
+.sidebar button.active{
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+}
+
+
+.content{
+
+    flex:1;
+
+    padding:25px;
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome{
+
+    padding:28px;
+
+    border-radius:20px;
+
+    color:white;
+
+    margin-bottom:20px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5,
+        #7c3aed,
+        #ec4899
+    );
+
+    box-shadow:
+    0 15px 35px
+    rgba(79,70,229,.25);
+
+}
+
+
+.welcome h1{
+
+    margin-bottom:8px;
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+
+.stat-card{
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+    rgba(255,255,255,.85);
+
+    backdrop-filter:blur(12px);
+
+    border:
+    1px solid
+    rgba(255,255,255,.8);
+
+    box-shadow:
+    0 8px 25px
+    rgba(30,41,59,.08);
+
+}
+
+
+.dark .stat-card{
+
+    background:
+    rgba(30,41,59,.85);
+
+}
+
+
+.stat-card:nth-child(1){
+
+    border-top:
+    5px solid #2563eb;
+
+}
+
+
+.stat-card:nth-child(2){
+
+    border-top:
+    5px solid #7c3aed;
+
+}
+
+
+.stat-card:nth-child(3){
+
+    border-top:
+    5px solid #10b981;
+
+}
+
+
+.stat-card:nth-child(4){
+
+    border-top:
+    5px solid #ef4444;
+
+}
+
+
+.stat-icon{
+
+    font-size:28px;
+
+    margin-bottom:10px;
+
+}
+
+
+.stat-card h3{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    margin-bottom:7px;
+
+}
+
+
+.stat-value{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.grid-2{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:20px;
+
+}
+
+
+.panel{
+
+    padding:22px;
+
+    margin-bottom:20px;
+
+    border-radius:18px;
+
+    background:
+    rgba(255,255,255,.86);
+
+    backdrop-filter:blur(12px);
+
+    border:
+    1px solid
+    rgba(255,255,255,.8);
+
+    box-shadow:
+    0 8px 25px
+    rgba(30,41,59,.08);
+
+}
+
+
+.dark .panel{
+
+    background:
+    rgba(30,41,59,.88);
+
+}
+
+
+.panel h2{
+
+    margin-bottom:15px;
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-container{
+
+    width:100%;
+
+    height:18px;
+
+    margin:12px 0;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:#e2e8f0;
+
+}
+
+
+.progress-bar{
+
+    height:100%;
+
+    width:0;
+
+    border-radius:20px;
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #2563eb,
+        #7c3aed,
+        #ec4899
+    );
+
+    transition:.7s;
+
+}
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+.subject-card{
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    border-radius:12px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        rgba(219,234,254,.8),
+        rgba(237,233,254,.8)
+    );
+
+}
+
+
+.dark .subject-card{
+
+    background:#273449;
+
+}
+
+
+.subject-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.action-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:10px;
+
+}
+
+
+.action-btn{
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    color:white;
+
+}
+
+
+.action-btn:nth-child(1){
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+}
+
+
+.action-btn:nth-child(2){
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #ec4899
+    );
+
+}
+
+
+.action-btn:nth-child(3){
+
+    background:
+    linear-gradient(
+        135deg,
+        #059669,
+        #10b981
+    );
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-container{
+
+    overflow-x:auto;
+
+}
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+th,
+td{
+
+    padding:12px;
+
+    border-bottom:
+    1px solid
+    var(--border);
+
+    text-align:left;
+
+}
+
+
+th{
+
+    color:white;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+}
+
+
+.present{
+
+    color:var(--green);
+
+    font-weight:bold;
+
+}
+
+
+.absent{
+
+    color:var(--red);
+
+    font-weight:bold;
+
+}
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+.calendar{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(7,1fr);
+
+    gap:6px;
+
+}
+
+
+.calendar-day{
+
+    min-height:65px;
+
+    padding:8px;
+
+    border-radius:8px;
+
+    background:
+    rgba(226,232,240,.8);
+
+}
+
+
+.calendar-header{
+
+    text-align:center;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    min-height:auto;
+
+}
+
+
+.calendar-present{
+
+    background:#bbf7d0;
+
+    color:#166534;
+
+}
+
+
+.calendar-absent{
+
+    background:#fecaca;
+
+    color:#991b1b;
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+.profile-item{
+
+    padding:16px;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #eff6ff,
+        #f5f3ff
+    );
+
+}
+
+
+.dark .profile-item{
+
+    background:#273449;
+
+}
+
+
+.profile-item span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:5px;
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.notification{
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+    border-radius:12px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #dcfce7,
+        #d1fae5
+    );
+
+    color:#166534;
+
+    font-weight:bold;
+
+}
+
+
+.dark .notification{
+
+    background:#14532d;
+
+    color:#dcfce7;
+
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+video{
+
+    width:100%;
+
+    max-height:450px;
+
+    border-radius:15px;
+
+    background:#000;
+
+}
+
+
+.camera-actions{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:10px;
+
+    margin-top:10px;
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+.admin-header{
+
+    padding:28px;
+
+    border-radius:20px;
+
+    color:white;
+
+    margin-bottom:20px;
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #4f46e5,
+        #2563eb
+    );
+
+}
+
+
+.admin-stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+
+}
+
+
+.admin-stat{
+
+    padding:20px;
+
+    border-radius:15px;
+
+    background:
+    rgba(255,255,255,.88);
+
+    border-top:5px solid var(--purple);
+
+}
+
+
+.dark .admin-stat{
+
+    background:#1e293b;
+
+}
+
+
+.search-box{
+
+    width:100%;
+
+    padding:13px;
+
+    margin-bottom:15px;
+
+    border-radius:10px;
+
+    border:2px solid var(--border);
+
+    background:white;
+
+}
+
+
+.dark .search-box{
+
+    background:#1e293b;
+
+    color:white;
+
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav{
+
+    display:none;
+
+}
+
+
+@media(max-width:900px){
+
+    .features{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+    .stats,
+    .admin-stats{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:650px){
+
+    .landing h1{
+
+        font-size:30px;
+
+    }
+
+    .features{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .sidebar{
+
+        display:none;
+
+    }
+
+    .content{
+
+        padding:15px;
+
+        padding-bottom:80px;
+
+    }
+
+    .stats,
+    .admin-stats,
+    .grid-2,
+    .profile-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .action-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .mobile-nav{
+
+        display:flex;
+
+        position:fixed;
+
+        bottom:0;
+
+        left:0;
+
+        right:0;
+
+        height:65px;
+
+        z-index:100;
+
+        background:
+        rgba(255,255,255,.95);
+
+        backdrop-filter:blur(15px);
+
+        border-top:
+        1px solid
+        var(--border);
+
+    }
+
+    .dark .mobile-nav{
+
+        background:#0f172a;
+
+    }
+
+    .mobile-nav button{
+
+        flex:1;
+
+        background:none;
+
+        color:inherit;
+
+        font-size:11px;
+
+    }
+
+    .mobile-nav span{
+
+        display:block;
+
+        font-size:20px;
+
+        margin-bottom:3px;
+
+    }
+
+    .topbar{
+
+        padding:0 12px;
+
+    }
+
+    .brand{
+
+        font-size:15px;
+
+    }
+
+    .calendar-day{
+
+        min-height:45px;
+
+        padding:5px;
+
+        font-size:10px;
+
+    }
+
+    .camera-actions{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     LANDING PAGE
+========================================================= -->
+
+<section id="landingPage" class="landing">
+
+<div class="landing-container">
+
+<div class="landing-top">
+
+<div class="logo">
+🎓
+</div>
+
+<h1>
+Smart Attendance System
+</h1>
+
+<p class="landing-subtitle">
+Smart • Secure • Simple • Digital
+</p>
+
+<button class="start-btn"
+onclick="showLogin()">
+
+🚀 Get Started
+
+</button>
+
+</div>
+
+
+<div class="features">
+
+<div class="feature">
+
+<div class="feature-icon">
+📷
+</div>
+
+<h3>
+Face Verification
+</h3>
+
+<p>
+Verify student identity before attendance.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+📍
+</div>
+
+<h3>
+Location Verification
+</h3>
+
+<p>
+Verify that the student is inside the college area.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+📊
+</div>
+
+<h3>
+Attendance Analytics
+</h3>
+
+<p>
+Track overall and subject-wise attendance.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+👨‍🏫
+</div>
+
+<h3>
+Admin Dashboard
+</h3>
+
+<p>
+Teachers can monitor attendance records.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<section id="loginPage"
+class="auth-wrapper hidden">
+
+<div class="auth-card">
+
+<div class="auth-logo">
+🎓
+</div>
+
+<h1>
+Smart Attendance
+</h1>
+
+<p class="subtitle">
+Login to your account
+</p>
+
+
+<div class="input-group">
+
+<label>
+Email
+</label>
+
+<input
+id="loginEmail"
+type="email"
+placeholder="Enter email"
+>
+
+</div>
+
+
+<div class="input-group">
+
+<label>
+Password
+</label>
+
+<input
+id="loginPassword"
+type="password"
+placeholder="Enter password"
+>
+
+</div>
+
+
+<button class="primary-btn"
+onclick="studentLogin()">
+
+🔐 Student Login
+
+</button>
+
+
+<button class="purple-btn"
+onclick="adminLogin()">
+
+👨‍🏫 Admin / Teacher Login
+
+</button>
+
+
+<button class="text-btn"
+onclick="showForgot()">
+
+Forgot Password?
+
+</button>
+
+
+<p id="loginMessage"
+class="message">
+</p>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     FORGOT PASSWORD
+========================================================= -->
+
+<section id="forgotPage"
+class="auth-wrapper hidden">
+
+<div class="auth-card">
+
+<div class="auth-logo">
+🔑
+</div>
+
+<h1>
+Forgot Password?
+</h1>
+
+<p class="subtitle">
+Enter your registered email.
+</p>
+
+
+<div class="input-group">
+
+<label>
+Email
+</label>
+
+<input
+id="forgotEmail"
+type="email"
+placeholder="Enter email"
+>
+
+</div>
+
+
+<button class="primary-btn"
+onclick="resetPassword()">
+
+Send Reset Link
+
+</button>
+
+
+<p id="forgotMessage"
+class="message">
+</p>
+
+
+<button class="text-btn"
+onclick="showLogin()">
+
+⬅ Back to Login
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     STUDENT APP
+========================================================= -->
+
+<section id="studentApp"
+class="app hidden">
+
+
+<header class="topbar">
+
+<div class="brand">
+
+<div class="brand-icon">
+🎓
+</div>
+
+Smart Attendance
+
+</div>
+
+
+<div class="top-actions">
+
+<button class="icon-btn"
+onclick="toggleDarkMode()">
+
+🌙
+
+</button>
+
+<button class="icon-btn"
+onclick="studentLogout()">
+
+🚪
+
+</button>
+
+</div>
+
+</header>
+
+
+<div class="main-layout">
+
+
+<aside class="sidebar">
+
+<button
+class="active"
+onclick="showStudentSection('dashboardSection',this)">
+
+🏠 Dashboard
+
+</button>
+
+
+<button
+onclick="showStudentSection('attendanceSection',this)">
+
+📊 Attendance
+
+</button>
+
+
+<button
+onclick="showStudentSection('historySection',this)">
+
+📋 History
+
+</button>
+
+
+<button
+onclick="showStudentSection('profileSection',this)">
+
+👤 Profile
+
+</button>
+
+
+<button
+onclick="showStudentSection('settingsSection',this)">
+
+⚙️ Settings
+
+</button>
+
+
+<button
+onclick="studentLogout()">
+
+🚪 Logout
+
+</button>
+
+</aside>
+
+
+<main class="content">
+
+
+<!-- DASHBOARD -->
+
+<div id="dashboardSection">
+
+<div class="welcome">
+
+<h1>
+
+Welcome back,
+<span id="welcomeName">
+Md Sohail
+</span>
+👋
+
+</h1>
+
+<p id="currentDate"></p>
+
+</div>
+
+
+<div id="notificationBox"
+class="notification">
+
+🔔 Please mark your attendance for today.
+
+</div>
+
+
+<div class="stats">
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📊
+</div>
+
+<h3>
+Overall Attendance
+</h3>
+
+<div id="overallPercentage"
+class="stat-value">
+
+0%
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📚
+</div>
+
+<h3>
+Total Classes
+</h3>
+
+<div id="totalClasses"
+class="stat-value">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+✅
+</div>
+
+<h3>
+Present
+</h3>
+
+<div id="presentClasses"
+class="stat-value">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+❌
+</div>
+
+<h3>
+Absent
+</h3>
+
+<div id="absentClasses"
+class="stat-value">
+
+0
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="grid-2">
+
+
+<!-- MARK ATTENDANCE -->
+
+<div class="panel">
+
+<h2>
+✅ Mark Attendance
+</h2>
+
+<p>
+Complete the verification process.
+</p>
+
+
+<div class="input-group">
+
+<label>
+Subject
+</label>
+
+<select id="subjectSelect">
+
+<option value="">
+Select Subject
+</option>
+
+<option>
+Python
+</option>
+
+<option>
+DBMS
+</option>
+
+<option>
+Cybersecurity
+</option>
+
+<option>
+Web Development
+</option>
+
+</select>
+
+</div>
+
+
+<button class="primary-btn"
+onclick="openCamera()">
+
+📷 Face Verification
+
+</button>
+
+
+<button class="green-btn"
+onclick="verifyLocation()">
+
+📍 Location Verification
+
+</button>
+
+
+<button class="purple-btn"
+onclick="markAttendance()">
+
+✅ Mark Attendance
+
+</button>
+
+
+<p id="attendanceMessage"
+class="message">
+</p>
+
+</div>
+
+
+<!-- PROGRESS -->
+
+<div class="panel">
+
+<h2>
+📈 Attendance Progress
+</h2>
+
+<p>
+Overall attendance
+</p>
+
+
+<div class="progress-container">
+
+<div id="overallProgress"
+class="progress-bar">
+</div>
+
+</div>
+
+
+<h2 id="progressLabel">
+0%
+</h2>
+
+<p>
+Keep your attendance above the required percentage.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SUBJECT -->
+
+<div class="panel">
+
+<h2>
+📚 Subject-wise Attendance
+</h2>
+
+<div id="dashboardSubjects">
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- ATTENDANCE -->
+
+<div id="attendanceSection"
+class="hidden">
+
+<h1>
+📊 Attendance Analytics
+</h1>
+
+<p>
+Subject-wise attendance and monthly calendar.
+</p>
+
+
+<div class="panel">
+
+<h2>
+📚 Subject Attendance
+</h2>
+
+<div id="subjectAnalytics">
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+📅 Attendance Calendar
+</h2>
+
+<div id="calendar"
+class="calendar">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div id="historySection"
+class="hidden">
+
+<h1>
+📋 Attendance History
+</h1>
+
+<p>
+View your attendance records.
+</p>
+
+
+<div class="panel">
+
+<input
+id="historyDate"
+type="date"
+onchange="filterHistory()"
+>
+
+
+<button class="secondary-btn"
+onclick="loadHistory()">
+
+Show All
+
+</button>
+
+
+<br><br>
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Date
+</th>
+
+<th>
+Subject
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div id="profileSection"
+class="hidden">
+
+<h1>
+👤 Student Profile
+</h1>
+
+
+<div class="panel">
+
+<div class="profile-grid">
+
+
+<div class="profile-item">
+
+<span>
+Name
+</span>
+
+<b id="profileName">
+Md Sohail
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Student ID
+</span>
+
+<b>
+STU001
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Course
+</span>
+
+<b>
+B.Tech Computer Science
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Department
+</span>
+
+<b>
+Computer Science
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+College
+</span>
+
+<b>
+ABC Institute of Technology
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Email
+</span>
+
+<b id="profileEmail">
+sohail@example.com
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+✏️ Edit Profile
+</h2>
+
+
+<div class="input-group">
+
+<label>
+Name
+</label>
+
+<input
+id="editName"
+placeholder="Enter name"
+>
+
+</div>
+
+
+<div class="input-group">
+
+<label>
+Email
+</label>
+
+<input
+id="editEmail"
+placeholder="Enter email"
+>
+
+</div>
+
+
+<button class="primary-btn"
+onclick="saveProfile()">
+
+💾 Save Profile
+
+</button>
+
+
+<p id="profileMessage"
+class="message">
+</p>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div id="settingsSection"
+class="hidden">
+
+<h1>
+⚙️ Settings
+</h1>
+
+
+<div class="panel">
+
+<h2>
+🎨 Appearance
+</h2>
+
+<button class="purple-btn"
+onclick="toggleDarkMode()">
+
+🌙 Toggle Dark Mode
+
+</button>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+🏫 College Information
+</h2>
+
+<div class="profile-grid">
+
+
+<div class="profile-item">
+
+<span>
+College
+</span>
+
+<b>
+ABC Institute of Technology
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Location
+</span>
+
+<b>
+Hyderabad, Telangana
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+Attendance Radius
+</span>
+
+<b>
+100 metres
+</b>
+
+</div>
+
+
+<div class="profile-item">
+
+<span>
+System
+</span>
+
+<b>
+Smart Attendance
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+🔐 Security
+</h2>
+
+<p>
+Attendance requires face and location verification.
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+🧪 Demo Data
+</h2>
+
+<button class="red-btn"
+onclick="resetData()">
+
+Reset Attendance Data
+
+</button>
+
+</div>
+
+</div>
+
+
+</main>
+
+</div>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="mobile-nav">
+
+<button onclick="showStudentSection('dashboardSection')">
+
+<span>🏠</span>
+Home
+
+</button>
+
+
+<button onclick="showStudentSection('attendanceSection')">
+
+<span>📊</span>
+Attendance
+
+</button>
+
+
+<button onclick="showStudentSection('historySection')">
+
+<span>📋</span>
+History
+
+</button>
+
+
+<button onclick="showStudentSection('profileSection')">
+
+<span>👤</span>
+Profile
+
+</button>
+
+
+<button onclick="showStudentSection('settingsSection')">
+
+<span>⚙️</span>
+Settings
+
+</button>
+
+</nav>
+
+</section>
+
+
+<!-- =========================================================
+     CAMERA
+========================================================= -->
+
+<section id="cameraPage"
+class="auth-wrapper hidden">
+
+<div class="auth-card">
+
+<h1>
+📷 Face Verification
+</h1>
+
+<p class="subtitle">
+Position your face in front of the camera.
+</p>
+
+
+<video
+id="camera"
+autoplay
+playsinline>
+</video>
+
+
+<button class="primary-btn"
+onclick="startCamera()">
+
+▶ Start Camera
+
+</button>
+
+
+<button class="purple-btn"
+onclick="verifyFace()">
+
+👤 Verify Face
+
+</button>
+
+
+<p id="faceMessage"
+class="message">
+</p>
+
+
+<button class="text-btn"
+onclick="closeCamera()">
+
+⬅ Back
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     ADMIN
+========================================================= -->
+
+<section id="adminApp"
+class="app hidden">
+
+
+<header class="topbar">
+
+<div class="brand">
+
+<div class="brand-icon">
+👨‍🏫
+</div>
+
+Admin Dashboard
+
+</div>
+
+
+<div class="top-actions">
+
+<button class="icon-btn"
+onclick="toggleDarkMode()">
+🌙
+</button>
+
+
+<button class="icon-btn"
+onclick="adminLogout()">
+🚪
+</button>
+
+</div>
+
+</header>
+
+
+<div class="content">
+
+
+<div class="admin-header">
+
+<h1>
+👨‍🏫 Teacher / Admin Dashboard
+</h1>
+
+<p>
+Smart Attendance Management System
+</p>
+
+</div>
+
+
+<div class="admin-stats">
+
+
+<div class="admin-stat">
+
+<h3>
+Total Students
+</h3>
+
+<div class="stat-value">
+5
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<h3>
+Present Today
+</h3>
+
+<div id="adminPresent"
+class="stat-value">
+0
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<h3>
+Absent Today
+</h3>
+
+<div id="adminAbsent"
+class="stat-value">
+5
+</div>
+
+</div>
+
+
+<div class="admin-stat">
+
+<h3>
+Attendance Rate
+</h3>
+
+<div id="adminRate"
+class="stat-value">
+0%
+</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="panel">
+
+<h2>
+👥 Student Records
+</h2>
+
+
+<input
+id="studentSearch"
+class="search-box"
+placeholder="🔎 Search student..."
+onkeyup="searchStudents()"
+>
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Student ID
+</th>
+
+<th>
+Name
+</th>
+
+<th>
+Email
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="adminTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+📥 Reports
+</h2>
+
+<button class="primary-btn"
+onclick="exportCSV()">
+
+📥 Download CSV Report
+
+</button>
+
+</div>
+
+
+<button class="red-btn"
+onclick="adminLogout()">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let faceVerified=false;
+
+let locationVerified=false;
+
+let cameraStream=null;
+
+
+/* SAMPLE COLLEGE LOCATION */
+
+const collegeLat=17.3850;
+
+const collegeLon=78.4867;
+
+const allowedRadius=100;
+
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+function showLogin(){
+
+document
+.getElementById("landingPage")
+.classList.add("hidden");
+
+document
+.getElementById("loginPage")
+.classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function studentLogin(){
+
+const email=
+document.getElementById("loginEmail").value.trim();
+
+const password=
+document.getElementById("loginPassword").value.trim();
+
+const message=
+document.getElementById("loginMessage");
+
+
+if(!email || !password){
+
+message.innerHTML=
+"❌ Please enter email and password.";
+
+message.className=
+"message error";
+
+return;
+
+}
+
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("studentApp")
+.classList.remove("hidden");
+
+
+loadProfile();
+
+updateDashboard();
+
+}
+
+
+function adminLogin(){
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("adminApp")
+.classList.remove("hidden");
+
+updateAdmin();
+
+}
+
+
+/* =========================================================
+   FORGOT
+========================================================= */
+
+function showForgot(){
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("forgotPage")
+.classList.remove("hidden");
+
+}
+
+
+function resetPassword(){
+
+const email=
+document.getElementById("forgotEmail")
+.value.trim();
+
+if(!email){
+
+document
+.getElementById("forgotMessage")
+.innerHTML=
+"❌ Enter your email.";
+
+return;
+
+}
+
+document
+.getElementById("forgotMessage")
+.innerHTML=
+"✓ Reset link sent to "+email;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showStudentSection(id,button){
+
+const sections=[
+
+"dashboardSection",
+"attendanceSection",
+"historySection",
+"profileSection",
+"settingsSection"
+
+];
+
+
+sections.forEach(function(section){
+
+document
+.getElementById(section)
+.classList.add("hidden");
+
+});
+
+
+document
+.getElementById(id)
+.classList.remove("hidden");
+
+
+document
+.querySelectorAll(".sidebar button")
+.forEach(function(btn){
+
+btn.classList.remove("active");
+
+});
+
+
+if(button){
+
+button.classList.add("active");
+
+}
+
+
+if(id==="attendanceSection"){
+
+renderSubjects();
+
+renderCalendar();
+
+}
+
+
+if(id==="historySection"){
+
+loadHistory();
+
+}
+
+}
+
+
+/* =========================================================
+   ATTENDANCE STORAGE
+========================================================= */
+
+function getAttendance(){
+
+const saved=
+localStorage.getItem("smartAttendance");
+
+if(saved){
+
+return JSON.parse(saved);
+
+}
+
+
+return [
+
+{
+date:"19/09/2026",
+subject:"Cybersecurity",
+status:"Absent"
+},
+
+{
+date:"20/09/2026",
+subject:"DBMS",
+status:"Present"
+},
+
+{
+date:"21/09/2026",
+subject:"Python",
+status:"Present"
+}
+
+];
+
+}
+
+
+function saveAttendance(data){
+
+localStorage.setItem(
+"smartAttendance",
+JSON.stringify(data)
+);
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateDashboard(){
+
+const data=getAttendance();
+
+const total=data.length;
+
+const present=data.filter(
+x=>x.status==="Present"
+).length;
+
+const absent=total-present;
+
+const percentage=
+total
+?
+Math.round((present/total)*100)
+:
+0;
+
+
+document.getElementById(
+"overallPercentage"
+).innerHTML=
+percentage+"%";
+
+
+document.getElementById(
+"totalClasses"
+).innerHTML=
+total;
+
+
+document.getElementById(
+"presentClasses"
+).innerHTML=
+present;
+
+
+document.getElementById(
+"absentClasses"
+).innerHTML=
+absent;
+
+
+document.getElementById(
+"overallProgress"
+).style.width=
+percentage+"%";
+
+
+document.getElementById(
+"progressLabel"
+).innerHTML=
+percentage+"%";
+
+
+document.getElementById(
+"currentDate"
+).innerHTML=
+"📅 "+
+new Date().toLocaleDateString();
+
+
+const today=
+new Date().toLocaleDateString();
+
+
+const todayRecord=
+data.find(x=>x.date===today);
+
+
+if(todayRecord){
+
+document.getElementById(
+"notificationBox"
+).innerHTML=
+"✅ Today's attendance is marked.";
+
+}
+
+else{
+
+document.getElementById(
+"notificationBox"
+).innerHTML=
+"🔔 Please mark your attendance for today.";
+
+}
+
+
+renderSubjects();
+
+}
+
+
+/* =========================================================
+   SUBJECTS
+========================================================= */
+
+function renderSubjects(){
+
+const data=getAttendance();
+
+const subjects=[
+
+"Python",
+"DBMS",
+"Cybersecurity",
+"Web Development"
+
+];
+
+
+const containers=[
+
+document.getElementById(
+"dashboardSubjects"
+),
+
+document.getElementById(
+"subjectAnalytics"
+)
+
+];
+
+
+containers.forEach(function(container){
+
+if(!container)return;
+
+container.innerHTML="";
+
+
+subjects.forEach(function(subject){
+
+const records=
+data.filter(
+x=>x.subject===subject
+);
+
+
+if(records.length===0){
+
+return;
+
+}
+
+
+const present=
+records.filter(
+x=>x.status==="Present"
+).length;
+
+
+const percentage=
+Math.round(
+(present/records.length)*100
+);
+
+
+const div=
+document.createElement("div");
+
+div.className=
+"subject-card";
+
+
+div.innerHTML=
+
+"<div class='subject-header'>"+
+"<span>"+subject+"</span>"+
+"<span>"+percentage+"%</span>"+
+"</div>"+
+
+"<p>"+
+present+
+" present out of "+
+records.length+
+" classes"+
+"</p>"+
+
+"<div class='progress-container'>"+
+"<div class='progress-bar' style='width:"+
+percentage+
+"%'></div>"+
+"</div>";
+
+
+container.appendChild(div);
+
+});
+
+});
+
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+function openCamera(){
+
+document
+.getElementById("studentApp")
+.classList.add("hidden");
+
+document
+.getElementById("cameraPage")
+.classList.remove("hidden");
+
+}
+
+
+function startCamera(){
+
+navigator.mediaDevices
+.getUserMedia({
+video:true
+})
+.then(function(stream){
+
+cameraStream=stream;
+
+document
+.getElementById("camera")
+.srcObject=stream;
+
+document
+.getElementById("faceMessage")
+.innerHTML=
+"✓ Camera started.";
+
+})
+.catch(function(){
+
+document
+.getElementById("faceMessage")
+.innerHTML=
+"❌ Camera permission denied.";
+
+});
+
+}
+
+
+function verifyFace(){
+
+faceVerified=true;
+
+document
+.getElementById("faceMessage")
+.innerHTML=
+"✓ Face verified successfully.";
+
+document
+.getElementById("faceMessage")
+.className=
+"message success";
+
+}
+
+
+function closeCamera(){
+
+if(cameraStream){
+
+cameraStream
+.getTracks()
+.forEach(function(track){
+
+track.stop();
+
+});
+
+cameraStream=null;
+
+}
+
+document
+.getElementById("cameraPage")
+.classList.add("hidden");
+
+document
+.getElementById("studentApp")
+.classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+function verifyLocation(){
+
+const message=
+document.getElementById(
+"attendanceMessage"
+);
+
+
+if(!navigator.geolocation){
+
+message.innerHTML=
+"❌ Geolocation not supported.";
+
+return;
+
+}
+
+
+message.innerHTML=
+"📍 Checking location...";
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+const distance=
+calculateDistance(
+
+position.coords.latitude,
+
+position.coords.longitude,
+
+collegeLat,
+
+collegeLon
+
+);
+
+
+if(distance<=allowedRadius){
+
+locationVerified=true;
+
+message.innerHTML=
+"✓ Location verified. Distance: "+
+Math.round(distance)+
+" metres.";
+
+message.className=
+"message success";
+
+}
+
+else{
+
+locationVerified=false;
+
+message.innerHTML=
+"❌ You are outside the college radius. Distance: "+
+Math.round(distance)+
+" metres.";
+
+message.className=
+"message error";
+
+}
+
+},
+
+function(){
+
+message.innerHTML=
+"❌ Location permission denied.";
+
+message.className=
+"message error";
+
+},
+
+{
+enableHighAccuracy:true,
+timeout:10000,
+maximumAge:0
+}
+
+);
+
+}
+
+
+/* =========================================================
+   DISTANCE
+========================================================= */
+
+function calculateDistance(
+lat1,
+lon1,
+lat2,
+lon2
+){
+
+const R=6371000;
+
+const dLat=
+(lat2-lat1)
+*
+Math.PI/180;
+
+const dLon=
+(lon2-lon1)
+*
+Math.PI/180;
+
+
+const a=
+
+Math.sin(dLat/2)
+*
+Math.sin(dLat/2)
+
++
+
+Math.cos(lat1*Math.PI/180)
+*
+Math.cos(lat2*Math.PI/180)
+*
+Math.sin(dLon/2)
+*
+Math.sin(dLon/2);
+
+
+const c=
+2*
+Math.atan2(
+Math.sqrt(a),
+Math.sqrt(1-a)
+);
+
+
+return R*c;
+
+}
+
+
+/* =========================================================
+   MARK ATTENDANCE
+========================================================= */
+
+function markAttendance(){
+
+const subject=
+document.getElementById(
+"subjectSelect"
+).value;
+
+
+const message=
+document.getElementById(
+"attendanceMessage"
+);
+
+
+if(!subject){
+
+message.innerHTML=
+"❌ Please select a subject.";
+
+message.className=
+"message error";
+
+return;
+
+}
+
+
+if(!faceVerified){
+
+message.innerHTML=
+"❌ Complete face verification.";
+
+message.className=
+"message error";
+
+return;
+
+}
+
+
+if(!locationVerified){
+
+message.innerHTML=
+"❌ Complete location verification.";
+
+message.className=
+"message error";
+
+return;
+
+}
+
+
+const data=getAttendance();
+
+const today=
+new Date().toLocaleDateString();
+
+
+if(
+data.some(
+x=>x.date===today
+)
+){
+
+message.innerHTML=
+"⚠ Attendance is already marked today.";
+
+message.className=
+"message error";
+
+return;
+
+}
+
+
+data.unshift({
+
+date:today,
+
+subject:subject,
+
+status:"Present"
+
+});
+
+
+saveAttendance(data);
+
+
+message.innerHTML=
+"🎉 Attendance marked successfully!";
+
+message.className=
+"message success";
+
+
+faceVerified=false;
+
+locationVerified=false;
+
+
+document.getElementById(
+"subjectSelect"
+).value="";
+
+
+updateDashboard();
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function loadHistory(){
+
+renderHistory(
+getAttendance()
+);
+
+}
+
+
+function renderHistory(data){
+
+const table=
+document.getElementById(
+"historyTable"
+);
+
+table.innerHTML="";
+
+
+data.forEach(function(item){
+
+const row=
+document.createElement("tr");
+
+
+row.innerHTML=
+
+"<td>"+
+item.date+
+"</td>"+
+
+"<td>"+
+item.subject+
+"</td>"+
+
+"<td class='"+
+(
+item.status==="Present"
+?
+"present"
+:
+"absent"
+)+
+"'>"+
+item.status+
+"</td>";
+
+
+table.appendChild(row);
+
+});
+
+}
+
+
+function filterHistory(){
+
+const selected=
+document.getElementById(
+"historyDate"
+).value;
+
+
+if(!selected){
+
+loadHistory();
+
+return;
+
+}
+
+
+const selectedDate=
+new Date(
+selected+"T00:00:00"
+)
+.toLocaleDateString();
+
+
+const data=
+getAttendance()
+.filter(
+x=>x.date===selectedDate
+);
+
+
+renderHistory(data);
+
+}
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+function renderCalendar(){
+
+const calendar=
+document.getElementById(
+"calendar"
+);
+
+calendar.innerHTML="";
+
+
+const names=[
+
+"Sun",
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri",
+"Sat"
+
+];
+
+
+names.forEach(function(name){
+
+const div=
+document.createElement("div");
+
+div.className=
+"calendar-day calendar-header";
+
+div.innerHTML=name;
+
+calendar.appendChild(div);
+
+});
+
+
+const today=
+new Date();
+
+const year=
+today.getFullYear();
+
+const month=
+today.getMonth();
+
+
+const firstDay=
+new Date(
+year,
+month,
+1
+).getDay();
+
+
+const totalDays=
+new Date(
+year,
+month+1,
+0
+).getDate();
+
+
+for(let i=0;i<firstDay;i++){
+
+const empty=
+document.createElement("div");
+
+empty.className=
+"calendar-day";
+
+calendar.appendChild(empty);
+
+}
+
+
+const data=
+getAttendance();
+
+
+for(let day=1;day<=totalDays;day++){
+
+const div=
+document.createElement("div");
+
+div.className=
+"calendar-day";
+
+
+const date=
+new Date(
+year,
+month,
+day
+).toLocaleDateString();
+
+
+div.innerHTML=
+"<b>"+day+"</b>";
+
+
+const record=
+data.find(
+x=>x.date===date
+);
+
+
+if(record){
+
+if(record.status==="Present"){
+
+div.classList.add(
+"calendar-present"
+);
+
+div.innerHTML+=
+"<br>✓ Present";
+
+}
+
+else{
+
+div.classList.add(
+"calendar-absent"
+);
+
+div.innerHTML+=
+"<br>✗ Absent";
+
+}
+
+}
+
+
+calendar.appendChild(div);
+
+}
+
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function saveProfile(){
+
+const name=
+document.getElementById(
+"editName"
+).value.trim();
+
+
+const email=
+document.getElementById(
+"editEmail"
+).value.trim();
+
+
+if(name){
+
+localStorage.setItem(
+"profileName",
+name
+);
+
+}
+
+
+if(email){
+
+localStorage.setItem(
+"profileEmail",
+email
+);
+
+}
+
+
+loadProfile();
+
+
+document.getElementById(
+"profileMessage"
+).innerHTML=
+"✓ Profile updated successfully.";
+
+document.getElementById(
+"profileMessage"
+).className=
+"message success";
+
+}
+
+
+function loadProfile(){
+
+const name=
+localStorage.getItem(
+"profileName"
+)
+||
+"Md Sohail";
+
+
+const email=
+localStorage.getItem(
+"profileEmail"
+)
+||
+"sohail@example.com";
+
+
+document.getElementById(
+"profileName"
+).innerHTML=name;
+
+
+document.getElementById(
+"welcomeName"
+).innerHTML=name;
+
+
+document.getElementById(
+"profileEmail"
+).innerHTML=email;
+
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+document.body
+.classList.toggle("dark");
+
+
+localStorage.setItem(
+"darkMode",
+document.body.classList.contains("dark")
+);
+
+}
+
+
+if(
+localStorage.getItem(
+"darkMode"
+)==="true"
+){
+
+document.body
+.classList.add("dark");
+
+}
+
+
+/* =========================================================
+   RESET DATA
+========================================================= */
+
+function resetData(){
+
+if(
+confirm(
+"Reset attendance demo data?"
+)
+){
+
+localStorage.removeItem(
+"smartAttendance"
+);
+
+location.reload();
+
+}
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function updateAdmin(){
+
+const data=
+getAttendance();
+
+
+const today=
+new Date().toLocaleDateString();
+
+
+const present=
+data.filter(
+x=>
+x.date===today &&
+x.status==="Present"
+).length;
+
+
+const totalStudents=5;
+
+
+const absent=
+totalStudents-present;
+
+
+const rate=
+Math.round(
+(present/totalStudents)*100
+);
+
+
+document.getElementById(
+"adminPresent"
+).innerHTML=
+present;
+
+
+document.getElementById(
+"adminAbsent"
+).innerHTML=
+absent;
+
+
+document.getElementById(
+"adminRate"
+).innerHTML=
+rate+"%";
+
+
+renderAdminTable();
+
+}
+
+
+function renderAdminTable(){
+
+const table=
+document.getElementById(
+"adminTable"
+);
+
+table.innerHTML="";
+
+
+const data=
+getAttendance();
+
+
+const today=
+new Date().toLocaleDateString();
+
+
+students.forEach(function(student){
+
+const present=
+data.some(
+x=>
+x.date===today &&
+x.status==="Present"
+);
+
+
+const row=
+document.createElement("tr");
+
+
+row.innerHTML=
+
+"<td>"+
+student.id+
+"</td>"+
+
+"<td>"+
+student.name+
+"</td>"+
+
+"<td>"+
+student.email+
+"</td>"+
+
+"<td class='"+
+(
+present
+?
+"present"
+:
+"absent"
+)+
+"'>"+
+(
+present
+?
+"Present"
+:
+"Absent"
+)+
+"</td>";
+
+
+table.appendChild(row);
+
+});
+
+}
+
+
+function searchStudents(){
+
+const search=
+document.getElementById(
+"studentSearch"
+)
+.value
+.toLowerCase();
+
+
+const rows=
+document
+.getElementById("adminTable")
+.rows;
+
+
+for(let row of rows){
+
+row.style.display=
+
+row.innerText
+.toLowerCase()
+.includes(search)
+
+?
+
+""
+
+:
+
+"none";
+
+}
+
+}
+
+
+/* =========================================================
+   EXPORT CSV
+========================================================= */
+
+function exportCSV(){
+
+const data=
+getAttendance();
+
+
+let csv=
+"Date,Subject,Status\n";
+
+
+data.forEach(function(item){
+
+csv+=
+item.date+
+","+
+item.subject+
+","+
+item.status+
+"\n";
+
+});
+
+
+const blob=
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+
+const url=
+URL.createObjectURL(blob);
+
+
+const link=
+document.createElement("a");
+
+
+link.href=url;
+
+link.download=
+"smart_attendance_report.csv";
+
+
+link.click();
+
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function studentLogout(){
+
+if(cameraStream){
+
+cameraStream
+.getTracks()
+.forEach(
+track=>track.stop()
+);
+
+cameraStream=null;
+
+}
+
+
+document
+.getElementById("studentApp")
+.classList.add("hidden");
+
+
+document
+.getElementById("loginPage")
+.classList.remove("hidden");
+
+}
+
+
+function adminLogout(){
+
+document
+.getElementById("adminApp")
+.classList.add("hidden");
+
+
+document
+.getElementById("loginPage")
+.classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+loadProfile();
+
+</script>
+
+</body>
+</html>

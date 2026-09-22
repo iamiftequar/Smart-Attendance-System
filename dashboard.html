@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Attendance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <header class="dashboard-header">
+            <div>
+                <h1>Smart Attendance</h1>
+                <p>Attendance Management Dashboard</p>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </header>
+
+        <main>
+
+            <h2>Welcome, Student 👋</h2>
+
+            <div class="dashboard-cards">
+
+                <div class="card">
+                    <h3>Today's Attendance</h3>
+                    <p class="card-value">Present</p>
+                    <span>September 22, 2026</span>
+                </div>
+
+                <div class="card">
+                    <h3>Attendance Percentage</h3>
+                    <p class="card-value">92%</p>
+                    <span>This semester</span>
+                </div>
+
+                <div class="card">
+                    <h3>Total Classes</h3>
+                    <p class="card-value">48</p>
+                    <span>This semester</span>
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <div class="action-card">
+                    <h3>📷 Face Verification</h3>
+                    <p>Verify your identity using facial recognition.</p>
+                    <button onclick="showMessage('Face verification started')">
+                        Verify Face
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <h3>📍 Location Check</h3>
+                    <p>Check whether you are inside the attendance zone.</p>
+                    <button onclick="showMessage('Location verified')">
+                        Check Location
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <h3>✅ Mark Attendance</h3>
+                    <p>Mark your attendance after verification.</p>
+                    <button onclick="window.location.href='face-verification.html'">
+                        Verify Face
+                    </button>
+                </div>
+
+            </div>
+
+            <p id="dashboardMessage"></p>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

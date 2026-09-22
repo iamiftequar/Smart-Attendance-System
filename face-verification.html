@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Verification</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="verification-page">
+
+        <div class="verification-box">
+
+            <h1>Face Verification</h1>
+
+            <p>
+                Position your face inside the camera frame
+                to verify your identity.
+            </p>
+
+            <div class="camera-box">
+                <video id="camera" autoplay></video>
+            </div>
+
+            <button onclick="startCamera()">
+                Start Camera
+            </button>
+
+            <button onclick="verifyFace()">
+                Verify Face
+            </button>
+
+            <p id="faceMessage"></p>
+
+            <button class="back-btn" onclick="goDashboard()">
+                Back to Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
